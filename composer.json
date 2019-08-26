@@ -1,0 +1,47 @@
+{
+    "name": "dansmaculotte/omnipay-monetico",
+    "description": "Monetico driver for the Omnipay PHP payment processing library",
+    "type": "library",
+    "keywords": [
+        "omnipay",
+        "gateway",
+        "monetico"
+    ],
+    "homepage": "https://github.com/dansmaculotte/omnipay-monetico",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Gaël Reyrol",
+            "email": "gael@dansmaculotte.fr"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Omnipay\\Monetico\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Omnipay\\Monetico\\Tests\\": "tests/"
+        }
+    },
+    "require": {
+        "php": "^7.2",
+        "dansmaculotte/monetico-php": "^1.0",
+        "omnipay/common": "^3.0"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2.15",
+        "omnipay/tests": "^3.1"
+    },
+    "scripts": {
+        "test": "@php vendor/bin/phpunit",
+        "coverage": "@php vendor/bin/phpunit --coverage-html build",
+        "format": "@php vendor/bin/php-cs-fixer fix --config .php_cs.php"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
