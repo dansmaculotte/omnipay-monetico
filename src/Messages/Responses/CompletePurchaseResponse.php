@@ -3,6 +3,12 @@
 
 namespace Omnipay\Monetico\Messages\Responses;
 
-class CompletePurchaseResponse extends AbstractMoneticoResponse
+use Omnipay\Common\Message\AbstractResponse;
+
+class CompletePurchaseResponse extends AbstractResponse
 {
+    public function isSuccessful()
+    {
+        // TODO: Implement isSuccessful() method.
+    }
 }

@@ -3,6 +3,17 @@
 
 namespace Omnipay\Monetico\Messages\Requests;
 
-class PurchaseRequest extends AbstractMoneticoRequest
+use Omnipay\Common\Message\AbstractRequest;
+
+class PurchaseRequest extends AbstractRequest
 {
+    public function getData()
+    {
+        // TODO: Implement getData() method.
+    }
+
+    public function sendData($data)
+    {
+        // TODO: Implement sendData() method.
+    }
 }
