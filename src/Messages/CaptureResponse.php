@@ -8,7 +8,7 @@ use Omnipay\Common\Message\RedirectResponseInterface;
 
 class CaptureResponse extends AbstractResponse implements RedirectResponseInterface
 {
-    public function __construct(AuthorizeRequest $request, array $data)
+    public function __construct(CaptureRequest $request, array $data)
     {
         parent::__construct($request, $data);
 
