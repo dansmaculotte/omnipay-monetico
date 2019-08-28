@@ -5,12 +5,12 @@ namespace Omnipay\Monetico\Tests;
 use DansMaCulotte\Monetico\Requests\PaymentRequest;
 use Omnipay\Common\CreditCard;
 use Omnipay\Monetico\Messages\PurchaseResponse;
-use Omnipay\Monetico\MoneticoGateway;
+use Omnipay\Monetico\Gateway;
 use Omnipay\Tests\GatewayTestCase;
 
 class GatewayTest extends GatewayTestCase
 {
-    /** @var MoneticoGateway */
+    /** @var Gateway */
     protected $gateway;
 
     /** @var CreditCard */
@@ -20,7 +20,7 @@ class GatewayTest extends GatewayTestCase
     {
         parent::setUp();
 
-        $this->gateway = new MoneticoGateway($this->getHttpClient(), $this->getHttpRequest());
+        $this->gateway = new Gateway($this->getHttpClient(), $this->getHttpRequest());
         $this->gateway->setEptCode('1234567');
         $this->gateway->setSecurityKey('1036DEFD9175F29EE9337A1F284BDF781D5A4048');
         $this->gateway->setCompanyCode('dmc');

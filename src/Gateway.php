@@ -5,7 +5,7 @@ namespace Omnipay\Monetico;
 use Omnipay\Common\AbstractGateway;
 use Omnipay\Monetico\Messages\PurchaseRequest;
 
-class MoneticoGateway extends AbstractGateway
+class Gateway extends AbstractGateway
 {
     /**
      * @return string
@@ -38,7 +38,7 @@ class MoneticoGateway extends AbstractGateway
 
     /**
      * @param string $value
-     * @return MoneticoGateway
+     * @return Gateway
      */
     public function setEptCode(string $value): self
     {
@@ -55,7 +55,7 @@ class MoneticoGateway extends AbstractGateway
 
     /**
      * @param string $value
-     * @return MoneticoGateway
+     * @return Gateway
      */
     public function setSecurityKey(string $value): self
     {
@@ -72,7 +72,7 @@ class MoneticoGateway extends AbstractGateway
 
     /**
      * @param string $value
-     * @return MoneticoGateway
+     * @return Gateway
      */
     public function setCompanyCode(string $value): self
     {
