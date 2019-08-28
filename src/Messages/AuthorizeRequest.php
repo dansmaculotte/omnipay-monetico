@@ -8,7 +8,7 @@ use DansMaCulotte\Monetico\Requests\PaymentRequest;
 use DansMaCulotte\Monetico\Resources\ClientResource;
 use Omnipay\Common\Message\AbstractRequest;
 
-class PurchaseRequest extends AbstractRequest
+class AuthorizeRequest extends AbstractRequest
 {
     /**
      * @return array
@@ -58,7 +58,7 @@ class PurchaseRequest extends AbstractRequest
 
     public function sendData($data)
     {
-        $this->response = new PurchaseResponse($this, $data);
+        $this->response = new AuthorizeResponse($this, $data);
 
         return $this->response;
     }
@@ -73,7 +73,7 @@ class PurchaseRequest extends AbstractRequest
 
     /**
      * @param string $value
-     * @return PurchaseRequest
+     * @return AuthorizeRequest
      */
     public function setEptCode(string $value): self
     {
@@ -90,7 +90,7 @@ class PurchaseRequest extends AbstractRequest
 
     /**
      * @param string $value
-     * @return PurchaseRequest
+     * @return AuthorizeRequest
      */
     public function setSecurityKey(string $value): self
     {
@@ -107,7 +107,7 @@ class PurchaseRequest extends AbstractRequest
 
     /**
      * @param string $value
-     * @return PurchaseRequest
+     * @return AuthorizeRequest
      */
     public function setCompanyCode(string $value): self
     {
@@ -124,7 +124,7 @@ class PurchaseRequest extends AbstractRequest
 
     /**
      * @param string $value
-     * @return PurchaseRequest
+     * @return AuthorizeRequest
      */
     public function setReference(string $value): self
     {
@@ -141,7 +141,7 @@ class PurchaseRequest extends AbstractRequest
 
     /**
      * @param string $value
-     * @return PurchaseRequest
+     * @return AuthorizeRequest
      */
     public function setLanguage(string $value): self
     {

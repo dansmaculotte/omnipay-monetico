@@ -3,7 +3,9 @@
 namespace Omnipay\Monetico;
 
 use Omnipay\Common\AbstractGateway;
-use Omnipay\Monetico\Messages\PurchaseRequest;
+use Omnipay\Monetico\Messages\CompletePurchaseRequest;
+use Omnipay\Monetico\Messages\AuthorizeRequest;
+use Omnipay\Monetico\Messages\CaptureRequest;
 
 class Gateway extends AbstractGateway
 {
@@ -81,12 +83,24 @@ class Gateway extends AbstractGateway
 
     /**
      * @param array $parameters
-     * @return PurchaseRequest
+     * @return AuthorizeRequest
      */
-    public function purchase(array $parameters = []): PurchaseRequest
+    public function authorize(array $parameters = []): AuthorizeRequest
     {
-        /** @var PurchaseRequest $request */
-        $request = $this->createRequest(PurchaseRequest::class, $parameters);
+        /** @var AuthorizeRequest $request */
+        $request = $this->createRequest(AuthorizeRequest::class, $parameters);
+
+        return $request;
+    }
+
+    /**
+     * @param array $parameters
+     * @return CaptureRequest
+     */
+    public function capture(array $parameters = []): CaptureRequest
+    {
+        /** @var CaptureRequest $request */
+        $request = $this->createRequest(CaptureRequest::class, $parameters);
 
         return $request;
     }
