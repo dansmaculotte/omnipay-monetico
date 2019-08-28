@@ -2,17 +2,15 @@
 
 namespace Omnipay\Monetico;
 
-use DansMaCulotte\Monetico\Monetico;
 use Omnipay\Common\AbstractGateway;
-use Omnipay\Monetico\Messages\Requests\CompletePurchaseRequest;
-use Omnipay\Monetico\Messages\Requests\PurchaseRequest;
+use Omnipay\Monetico\Messages\PurchaseRequest;
 
 class MoneticoGateway extends AbstractGateway
 {
     /**
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return 'Monetico';
     }
@@ -20,86 +18,75 @@ class MoneticoGateway extends AbstractGateway
     /**
      * @return array
      */
-    public function getDefaultParameters()
+    public function getDefaultParameters(): array
     {
         return [
-            'ept_code' => null,
-            'security_key' => null,
-            'company_code' => null,
+            'eptCode' => '',
+            'securityKey' => '',
+            'companyCode' => '',
+            'testMode' => false,
         ];
     }
 
     /**
      * @return string
      */
-    public function getEptCode()
+    public function getEptCode(): string
     {
-        return $this->getParameter('ept_code');
+        return $this->getParameter('eptCode');
     }
 
     /**
      * @param string $value
      * @return MoneticoGateway
      */
-    public function setEptCode($value)
+    public function setEptCode(string $value): self
     {
-        return $this->setParameter('ept_code', $value);
+        return $this->setParameter('eptCode', $value);
     }
 
     /**
      * @return string
      */
-    public function getSecurityKey()
+    public function getSecurityKey(): string
     {
-        return $this->getParameter('security_key');
+        return $this->getParameter('securityKey');
     }
 
     /**
      * @param string $value
      * @return MoneticoGateway
      */
-    public function setSecurityKey($value)
+    public function setSecurityKey(string $value): self
     {
-        return $this->setParameter('security_key', Monetico::getUsableKey($value));
+        return $this->setParameter('securityKey', $value);
     }
 
     /**
      * @return string
      */
-    public function getCompanyCode()
+    public function getCompanyCode(): string
     {
-        return $this->getParameter('company_code');
+        return $this->getParameter('companyCode');
     }
 
     /**
      * @param string $value
      * @return MoneticoGateway
      */
-    public function setCompanyCode($value)
+    public function setCompanyCode(string $value): self
     {
-        return $this->setParameter('company_code', $value);
+        return $this->setParameter('companyCode', $value);
     }
 
     /**
-     * @param array $options
+     * @param array $parameters
      * @return PurchaseRequest
      */
-    public function purchase(array $options = [])
+    public function purchase(array $parameters = []): PurchaseRequest
     {
         /** @var PurchaseRequest $request */
-        $request = $this->createRequest(PurchaseRequest::class, $options);
-
-        return $request;
-    }
-
-    /**
-     * @param array $options
-     * @return CompletePurchaseRequest
-     */
-    public function completePurchase(array $options = [])
-    {
-        /** @var CompletePurchaseRequest $request */
-        $request = $this->createRequest(CompletePurchaseRequest::class, $options);
+        $request = $this->createRequest(PurchaseRequest::class, $parameters);
 
         return $request;
     }
