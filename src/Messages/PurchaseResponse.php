@@ -43,6 +43,14 @@ class PurchaseResponse extends AbstractResponse implements RedirectResponseInter
     /**
      * @return string
      */
+    public function getRedirectMethod()
+    {
+        return 'POST';
+    }
+
+    /**
+     * @return string
+     */
     public function getRedirectUrl()
     {
         return $this->data['url'];

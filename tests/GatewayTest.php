@@ -37,7 +37,7 @@ class GatewayTest extends GatewayTestCase
     {
         /** @var PurchaseResponse $response */
         $response = $this->gateway->purchase([
-            'transactionId' => 'DMC123456789',
+            'reference' => 'DMC123456789',
             'language' => 'FR',
             'amount' => '10.00',
             'currency' => 'EUR',
@@ -52,5 +52,7 @@ class GatewayTest extends GatewayTestCase
         $this->assertNotNull($response->getRedirectUrl());
         $this->assertSame(PaymentRequest::getUrl(true), $response->getRedirectUrl());
         $this->assertTrue($response->isTransparentRedirect());
+
+        $response->redirect();
     }
 }

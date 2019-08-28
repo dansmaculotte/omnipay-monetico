@@ -13,6 +13,7 @@ class PurchaseRequest extends AbstractRequest
     /**
      * @return array
      * @throws \DansMaCulotte\Monetico\Exceptions\Exception
+     * @throws \Omnipay\Common\Exception\InvalidRequestException
      */
     public function getData()
     {
@@ -36,12 +37,12 @@ class PurchaseRequest extends AbstractRequest
         );
 
         $payment = new PaymentRequest([
-            'reference' => $this->getTransactionId(),
+            'reference' => $this->getReference(),
             'language' => $this->getLanguage(),
             'dateTime' => new \DateTime(),
             'description' => $this->getDescription(),
             'email' => $card->getEmail(),
-            'amount' => $this->getAmountInteger(),
+            'amount' => $this->getAmount(),
             'currency' => $this->getCurrency(),
             'successUrl' => $this->getReturnUrl(),
             'errorUrl' => $this->getCancelUrl()
@@ -111,6 +112,23 @@ class PurchaseRequest extends AbstractRequest
     public function setCompanyCode(string $value): self
     {
         return $this->setParameter('companyCode', $value);
+    }
+
+    /**
+     * @return string
+     */
+    public function getReference(): string
+    {
+        return $this->getParameter('reference');
+    }
+
+    /**
+     * @param string $value
+     * @return PurchaseRequest
+     */
+    public function setReference(string $value): self
+    {
+        return $this->setParameter('reference', $value);
     }
 
     /**
