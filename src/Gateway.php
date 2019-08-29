@@ -92,16 +92,4 @@ class Gateway extends AbstractGateway
 
         return $request;
     }
-
-    /**
-     * @param array $parameters
-     * @return CaptureRequest
-     */
-    public function capture(array $parameters = []): CaptureRequest
-    {
-        /** @var CaptureRequest $request */
-        $request = $this->createRequest(CaptureRequest::class, $parameters);
-
-        return $request;
-    }
 }

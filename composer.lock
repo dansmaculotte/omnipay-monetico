@@ -60,16 +60,16 @@
         },
         {
             "name": "dansmaculotte/monetico-php",
-            "version": "2.0.0-beta.1",
+            "version": "2.0.0-beta.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dansmaculotte/monetico-php.git",
-                "reference": "9be2e378761731b98159569b14d7aef36caaf55a"
+                "reference": "3a8fdea7e32bdbf7e5a5bd95f778da85a0c9dc62"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dansmaculotte/monetico-php/zipball/9be2e378761731b98159569b14d7aef36caaf55a",
-                "reference": "9be2e378761731b98159569b14d7aef36caaf55a",
+                "url": "https://api.github.com/repos/dansmaculotte/monetico-php/zipball/3a8fdea7e32bdbf7e5a5bd95f778da85a0c9dc62",
+                "reference": "3a8fdea7e32bdbf7e5a5bd95f778da85a0c9dc62",
                 "shasum": ""
             },
             "require": {
@@ -113,7 +113,7 @@
             "keywords": [
                 "monetico"
             ],
-            "time": "2019-08-28T07:38:09+00:00"
+            "time": "2019-08-29T16:24:39+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",

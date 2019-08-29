@@ -6,7 +6,6 @@ use DansMaCulotte\Monetico\Requests\PaymentRequest;
 use Omnipay\Common\CreditCard;
 use Omnipay\Monetico\Gateway;
 use Omnipay\Monetico\Messages\AuthorizeResponse;
-use Omnipay\Monetico\Messages\CaptureResponse;
 use Omnipay\Tests\GatewayTestCase;
 
 class GatewayTest extends GatewayTestCase
@@ -53,22 +52,5 @@ class GatewayTest extends GatewayTestCase
         $this->assertNotNull($response->getRedirectUrl());
         $this->assertSame(PaymentRequest::getUrl(true), $response->getRedirectUrl());
         $this->assertTrue($response->isTransparentRedirect());
-    }
-
-    public function testCapture()
-    {
-        /** @var CaptureResponse $response */
-        $response = $this->gateway->capture([
-            'reference' => 'DMC123456789',
-            'language' => 'FR',
-            'amount' => '10.00',
-            'currency' => 'EUR',
-            'card' => $this->card,
-            'returnUrl' => 'http://localhost/success',
-            'cancelUrl' => 'http://localhost/error',
-        ])->send();
-
-        $this->assertInstanceOf(CaptureResponse::class, $response);
-        $this->assertFalse($response->isSuccessful());
     }
 }

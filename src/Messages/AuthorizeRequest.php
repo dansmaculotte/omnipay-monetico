@@ -28,13 +28,10 @@ class AuthorizeRequest extends AbstractRequest
 
         $card = $this->getCard();
 
-        $client = new ClientResource(
-            $card->getGender(),
-            $card->getName(),
-            $card->getFirstName(),
-            $card->getLastName(),
-            null
-        );
+        $client = new ClientResource();
+        $client->setParameter('civility', $card->getGender());
+        $client->setParameter('firstName', $card->getFirstName());
+        $client->setParameter('lastName', $card->getLastName());
 
         $payment = new PaymentRequest([
             'reference' => $this->getReference(),
