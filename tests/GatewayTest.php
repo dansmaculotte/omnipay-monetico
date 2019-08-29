@@ -5,7 +5,7 @@ namespace Omnipay\Monetico\Tests;
 use DansMaCulotte\Monetico\Requests\PaymentRequest;
 use Omnipay\Common\CreditCard;
 use Omnipay\Monetico\Gateway;
-use Omnipay\Monetico\Messages\AuthorizeResponse;
+use Omnipay\Monetico\Messages\CaptureResponse;
 use Omnipay\Tests\GatewayTestCase;
 
 class GatewayTest extends GatewayTestCase
@@ -33,10 +33,10 @@ class GatewayTest extends GatewayTestCase
         ]);
     }
 
-    public function testAuthorize()
+    public function testCapture()
     {
-        /** @var AuthorizeResponse $response */
-        $response = $this->gateway->authorize([
+        /** @var CaptureResponse $response */
+        $response = $this->gateway->capture([
             'reference' => 'DMC123456789',
             'language' => 'FR',
             'amount' => '10.00',
@@ -46,7 +46,7 @@ class GatewayTest extends GatewayTestCase
             'cancelUrl' => 'http://localhost/error',
         ])->send();
 
-        $this->assertInstanceOf(AuthorizeResponse::class, $response);
+        $this->assertInstanceOf(CaptureResponse::class, $response);
         $this->assertFalse($response->isSuccessful());
         $this->assertTrue($response->isRedirect());
         $this->assertNotNull($response->getRedirectUrl());

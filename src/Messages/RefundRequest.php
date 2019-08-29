@@ -4,11 +4,10 @@
 namespace Omnipay\Monetico\Messages;
 
 use DansMaCulotte\Monetico\Monetico;
-use DansMaCulotte\Monetico\Requests\PaymentRequest;
-use DansMaCulotte\Monetico\Resources\ClientResource;
+use DansMaCulotte\Monetico\Requests\RefundRequest as MoneticoRefund;
 use Omnipay\Common\Message\AbstractRequest;
 
-class AuthorizeRequest extends AbstractRequest
+class RefundRequest extends AbstractRequest
 {
     /**
      * @return array
@@ -26,36 +25,29 @@ class AuthorizeRequest extends AbstractRequest
             $this->getCompanyCode()
         );
 
-        $card = $this->getCard();
-
-        $client = new ClientResource();
-        $client->setParameter('civility', $card->getGender());
-        $client->setParameter('firstName', $card->getFirstName());
-        $client->setParameter('lastName', $card->getLastName());
-
-        $payment = new PaymentRequest([
-            'reference' => $this->getReference(),
+        $refund = new MoneticoRefund([
+            'reference' => $this->getTransactionId(),
             'language' => $this->getLanguage(),
             'dateTime' => new \DateTime(),
+            'orderDatetime' => new \DateTime(),
+            'recoveryDatetime' => new \DateTime(),
             'description' => $this->getDescription(),
-            'email' => $card->getEmail(),
             'amount' => $this->getAmount(),
             'currency' => $this->getCurrency(),
-            'successUrl' => $this->getReturnUrl(),
-            'errorUrl' => $this->getCancelUrl()
+            'authorizationNumber' => $this->getTransactionReference(),
+            'refundAmount' => 50,
+            'maxRefundAmount' => 80,
         ]);
 
-        $payment->setClient($client);
-
         return [
-            'fields' => $monetico->getFields($payment),
-            'url' => PaymentRequest::getUrl($this->getTestMode()),
+            'fields' => $monetico->getFields($refund),
+            'url' => MoneticoRefund::getUrl($this->getTestMode()),
         ];
     }
 
     public function sendData($data)
     {
-        $this->response = new AuthorizeResponse($this, $data);
+        $this->response = new RefundResponse($this, $data);
 
         return $this->response;
     }
@@ -70,7 +62,7 @@ class AuthorizeRequest extends AbstractRequest
 
     /**
      * @param string $value
-     * @return AuthorizeRequest
+     * @return CaptureRequest
      */
     public function setEptCode(string $value): self
     {
@@ -87,7 +79,7 @@ class AuthorizeRequest extends AbstractRequest
 
     /**
      * @param string $value
-     * @return AuthorizeRequest
+     * @return CaptureRequest
      */
     public function setSecurityKey(string $value): self
     {
@@ -104,7 +96,7 @@ class AuthorizeRequest extends AbstractRequest
 
     /**
      * @param string $value
-     * @return AuthorizeRequest
+     * @return CaptureRequest
      */
     public function setCompanyCode(string $value): self
     {
@@ -121,7 +113,7 @@ class AuthorizeRequest extends AbstractRequest
 
     /**
      * @param string $value
-     * @return AuthorizeRequest
+     * @return CaptureRequest
      */
     public function setReference(string $value): self
     {
@@ -138,7 +130,7 @@ class AuthorizeRequest extends AbstractRequest
 
     /**
      * @param string $value
-     * @return AuthorizeRequest
+     * @return CaptureRequest
      */
     public function setLanguage(string $value): self
     {

@@ -3,9 +3,8 @@
 namespace Omnipay\Monetico;
 
 use Omnipay\Common\AbstractGateway;
-use Omnipay\Monetico\Messages\CompletePurchaseRequest;
-use Omnipay\Monetico\Messages\AuthorizeRequest;
 use Omnipay\Monetico\Messages\CaptureRequest;
+use Omnipay\Monetico\Messages\RefundRequest;
 
 class Gateway extends AbstractGateway
 {
@@ -83,12 +82,24 @@ class Gateway extends AbstractGateway
 
     /**
      * @param array $parameters
-     * @return AuthorizeRequest
+     * @return CaptureRequest
      */
-    public function authorize(array $parameters = []): AuthorizeRequest
+    public function capture(array $parameters = []): CaptureRequest
     {
-        /** @var AuthorizeRequest $request */
-        $request = $this->createRequest(AuthorizeRequest::class, $parameters);
+        /** @var CaptureRequest $request */
+        $request = $this->createRequest(CaptureRequest::class, $parameters);
+
+        return $request;
+    }
+
+    /**
+     * @param array $parameters
+     * @return RefundRequest
+     */
+    public function refund(array $parameters = []): RefundRequest
+    {
+        /** @var RefundRequest $request */
+        $request = $this->createRequest(RefundRequest::class, $parameters);
 
         return $request;
     }
