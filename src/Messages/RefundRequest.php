@@ -5,7 +5,6 @@ namespace Omnipay\Monetico\Messages;
 
 use DansMaCulotte\Monetico\Monetico;
 use DansMaCulotte\Monetico\Requests\RefundRequest as MoneticoRefund;
-use Omnipay\Common\Message\AbstractRequest;
 
 class RefundRequest extends AbstractRequest
 {
@@ -19,24 +18,19 @@ class RefundRequest extends AbstractRequest
 //        var_dump($this->getParameters());
 //        die();
 
-        $monetico = new Monetico(
-            $this->getEptCode(),
-            $this->getSecurityKey(),
-            $this->getCompanyCode()
-        );
+        $monetico = $this->getMonetico();
 
         $refund = new MoneticoRefund([
             'reference' => $this->getTransactionId(),
             'language' => $this->getLanguage(),
             'dateTime' => new \DateTime(),
-            'orderDatetime' => new \DateTime(),
-            'recoveryDatetime' => new \DateTime(),
-            'description' => $this->getDescription(),
+            'orderDate' => $this->getOrderDate(),
+            'recoveryDate' => $this->getRecoveryDate(),
             'amount' => $this->getAmount(),
             'currency' => $this->getCurrency(),
             'authorizationNumber' => $this->getTransactionReference(),
-            'refundAmount' => 50,
-            'maxRefundAmount' => 80,
+            'refundAmount' => $this->getRefundAmount(),
+            'maxRefundAmount' => $this->getMaxRefundAmount(),
         ]);
 
         return [
@@ -47,93 +41,80 @@ class RefundRequest extends AbstractRequest
 
     public function sendData($data)
     {
-        $this->response = new RefundResponse($this, $data);
+        $headers = [];
+        $body = http_build_query($data['fields'], '', '&');
+
+        $response = $this->httpClient->request('POST', $data['url'], $headers, $body);
+
+        var_dump($response->getBody()->getContents());
+        die();
+
+        $this->response = new RefundResponse($this, $response->getBody()->getContents());
 
         return $this->response;
     }
 
     /**
-     * @return string
+     * @return \DateTime
      */
-    public function getEptCode(): string
+    public function getOrderDate(): \DateTime
     {
-        return $this->getParameter('eptCode');
+        return $this->getParameter('orderDate');
     }
 
     /**
-     * @param string $value
-     * @return CaptureRequest
+     * @param \DateTime $date
      */
-    public function setEptCode(string $value): self
+    public function setOrderDate(\DateTime $date): void
     {
-        return $this->setParameter('eptCode', $value);
+        $this->setParameter('orderDate', $date);
     }
 
     /**
-     * @return string
+     * @return \DateTime
      */
-    public function getSecurityKey(): string
+    public function getRecoveryDate(): \DateTime
     {
-        return $this->getParameter('securityKey');
+        return $this->getParameter('recoveryDate');
     }
 
     /**
-     * @param string $value
-     * @return CaptureRequest
+     * @param \DateTime $date
      */
-    public function setSecurityKey(string $value): self
+    public function setRecoveryDate(\DateTime $date): void
     {
-        return $this->setParameter('securityKey', $value);
-    }
-
-    /**
-     * @return string
-     */
-    public function getCompanyCode(): string
-    {
-        return $this->getParameter('companyCode');
-    }
-
-    /**
-     * @param string $value
-     * @return CaptureRequest
-     */
-    public function setCompanyCode(string $value): self
-    {
-        return $this->setParameter('companyCode', $value);
+        $this->setParameter('recoveryDate', $date);
     }
 
     /**
      * @return string
      */
-    public function getReference(): string
+    public function getRefundAmount(): string
     {
-        return $this->getParameter('reference');
+        return $this->getParameter('refundAmount');
     }
 
     /**
      * @param string $value
-     * @return CaptureRequest
      */
-    public function setReference(string $value): self
+    public function setRefundAmount(string $value): void
     {
-        return $this->setParameter('reference', $value);
+        $this->setParameter('refundAmount', $value);
     }
 
     /**
      * @return string
      */
-    public function getLanguage(): string
+    public function getMaxRefundAmount(): string
     {
-        return $this->getParameter('language');
+        return $this->getParameter('maxRefundAmount');
     }
 
     /**
      * @param string $value
-     * @return CaptureRequest
      */
-    public function setLanguage(string $value): self
+    public function setMaxRefundAmount(string $value): void
     {
-        return $this->setParameter('language', $value);
+        $this->setParameter('maxRefundAmount', $value);
     }
 }

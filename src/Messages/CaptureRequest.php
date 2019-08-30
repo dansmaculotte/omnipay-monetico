@@ -4,9 +4,8 @@
 namespace Omnipay\Monetico\Messages;
 
 use DansMaCulotte\Monetico\Monetico;
-use DansMaCulotte\Monetico\Requests\PaymentRequest;
+use DansMaCulotte\Monetico\Requests\CaptureRequest as MoneticoCapture;
 use DansMaCulotte\Monetico\Resources\ClientResource;
-use Omnipay\Common\Message\AbstractRequest;
 
 class CaptureRequest extends AbstractRequest
 {
@@ -20,11 +19,7 @@ class CaptureRequest extends AbstractRequest
 //        var_dump($this->getParameters());
 //        die();
 
-        $monetico = new Monetico(
-            $this->getEptCode(),
-            $this->getSecurityKey(),
-            $this->getCompanyCode()
-        );
+        $monetico = $this->getMonetico();
 
         $card = $this->getCard();
 
@@ -33,8 +28,8 @@ class CaptureRequest extends AbstractRequest
         $client->setParameter('firstName', $card->getFirstName());
         $client->setParameter('lastName', $card->getLastName());
 
-        $payment = new PaymentRequest([
-            'reference' => $this->getReference(),
+        $capture = new MoneticoCapture([
+            'reference' => $this->getTransactionId(),
             'language' => $this->getLanguage(),
             'dateTime' => new \DateTime(),
             'description' => $this->getDescription(),
@@ -45,11 +40,11 @@ class CaptureRequest extends AbstractRequest
             'errorUrl' => $this->getCancelUrl()
         ]);
 
-        $payment->setClient($client);
+        $capture->setClient($client);
 
         return [
-            'fields' => $monetico->getFields($payment),
-            'url' => PaymentRequest::getUrl($this->getTestMode()),
+            'fields' => $monetico->getFields($capture),
+            'url' => MoneticoCapture::getUrl($this->getTestMode()),
         ];
     }
 
@@ -58,90 +53,5 @@ class CaptureRequest extends AbstractRequest
         $this->response = new CaptureResponse($this, $data);
 
         return $this->response;
-    }
-
-    /**
-     * @return string
-     */
-    public function getEptCode(): string
-    {
-        return $this->getParameter('eptCode');
-    }
-
-    /**
-     * @param string $value
-     * @return CaptureRequest
-     */
-    public function setEptCode(string $value): self
-    {
-        return $this->setParameter('eptCode', $value);
-    }
-
-    /**
-     * @return string
-     */
-    public function getSecurityKey(): string
-    {
-        return $this->getParameter('securityKey');
-    }
-
-    /**
-     * @param string $value
-     * @return CaptureRequest
-     */
-    public function setSecurityKey(string $value): self
-    {
-        return $this->setParameter('securityKey', $value);
-    }
-
-    /**
-     * @return string
-     */
-    public function getCompanyCode(): string
-    {
-        return $this->getParameter('companyCode');
-    }
-
-    /**
-     * @param string $value
-     * @return CaptureRequest
-     */
-    public function setCompanyCode(string $value): self
-    {
-        return $this->setParameter('companyCode', $value);
-    }
-
-    /**
-     * @return string
-     */
-    public function getReference(): string
-    {
-        return $this->getParameter('reference');
-    }
-
-    /**
-     * @param string $value
-     * @return CaptureRequest
-     */
-    public function setReference(string $value): self
-    {
-        return $this->setParameter('reference', $value);
-    }
-
-    /**
-     * @return string
-     */
-    public function getLanguage(): string
-    {
-        return $this->getParameter('language');
-    }
-
-    /**
-     * @param string $value
-     * @return CaptureRequest
-     */
-    public function setLanguage(string $value): self
-    {
-        return $this->setParameter('language', $value);
     }
 }

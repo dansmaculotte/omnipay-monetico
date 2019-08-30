@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "23f1906bff076fe17275fb2ef1d713e5",
+    "content-hash": "49f9094cfd590b089285fac76894fe12",
     "packages": [
         {
             "name": "clue/stream-filter",
@@ -60,16 +60,16 @@
         },
         {
             "name": "dansmaculotte/monetico-php",
-            "version": "2.0.0-beta.2",
+            "version": "2.0.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dansmaculotte/monetico-php.git",
-                "reference": "3a8fdea7e32bdbf7e5a5bd95f778da85a0c9dc62"
+                "reference": "4cc2d152b7409a5292840388e65e71c7d9ff2cdb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dansmaculotte/monetico-php/zipball/3a8fdea7e32bdbf7e5a5bd95f778da85a0c9dc62",
-                "reference": "3a8fdea7e32bdbf7e5a5bd95f778da85a0c9dc62",
+                "url": "https://api.github.com/repos/dansmaculotte/monetico-php/zipball/4cc2d152b7409a5292840388e65e71c7d9ff2cdb",
+                "reference": "4cc2d152b7409a5292840388e65e71c7d9ff2cdb",
                 "shasum": ""
             },
             "require": {
@@ -113,7 +113,7 @@
             "keywords": [
                 "monetico"
             ],
-            "time": "2019-08-29T16:24:39+00:00"
+            "time": "2019-08-30T11:48:28+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -4223,7 +4223,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "dansmaculotte/monetico-php": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
