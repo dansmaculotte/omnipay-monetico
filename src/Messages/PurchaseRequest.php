@@ -7,7 +7,7 @@ use DansMaCulotte\Monetico\Monetico;
 use DansMaCulotte\Monetico\Requests\CaptureRequest as MoneticoCapture;
 use DansMaCulotte\Monetico\Resources\ClientResource;
 
-class CaptureRequest extends AbstractRequest
+class PurchaseRequest extends AbstractRequest
 {
     /**
      * @return array
@@ -50,7 +50,7 @@ class CaptureRequest extends AbstractRequest
 
     public function sendData($data)
     {
-        $this->response = new CaptureResponse($this, $data);
+        $this->response = new PurchaseResponse($this, $data);
 
         return $this->response;
     }

@@ -6,9 +6,9 @@ namespace Omnipay\Monetico\Messages;
 use Omnipay\Common\Message\AbstractResponse;
 use Omnipay\Common\Message\RedirectResponseInterface;
 
-class CaptureResponse extends AbstractResponse implements RedirectResponseInterface
+class PurchaseResponse extends AbstractResponse implements RedirectResponseInterface
 {
-    public function __construct(CaptureRequest $request, array $data)
+    public function __construct(PurchaseRequest $request, array $data)
     {
         parent::__construct($request, $data);
 

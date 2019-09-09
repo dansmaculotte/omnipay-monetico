@@ -34,7 +34,7 @@ abstract class AbstractRequest extends OmnipayAbstractRequest
 
     /**
      * @param string $value
-     * @return CaptureRequest
+     * @return PurchaseRequest
      */
     public function setEptCode(string $value): self
     {
@@ -51,7 +51,7 @@ abstract class AbstractRequest extends OmnipayAbstractRequest
 
     /**
      * @param string $value
-     * @return CaptureRequest
+     * @return PurchaseRequest
      */
     public function setSecurityKey(string $value): self
     {
@@ -68,7 +68,7 @@ abstract class AbstractRequest extends OmnipayAbstractRequest
 
     /**
      * @param string $value
-     * @return CaptureRequest
+     * @return PurchaseRequest
      */
     public function setCompanyCode(string $value): self
     {
@@ -85,7 +85,7 @@ abstract class AbstractRequest extends OmnipayAbstractRequest
 
     /**
      * @param string $value
-     * @return CaptureRequest
+     * @return PurchaseRequest
      */
     public function setLanguage(string $value): self
     {
