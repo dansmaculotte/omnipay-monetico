@@ -5,7 +5,6 @@ namespace Omnipay\Monetico\Tests;
 use DansMaCulotte\Monetico\Requests\CaptureRequest as MoneticoCapture;
 use Omnipay\Common\CreditCard;
 use Omnipay\Monetico\Gateway;
-use Omnipay\Monetico\Messages\PurchaseRequest;
 use Omnipay\Monetico\Messages\PurchaseResponse;
 use Omnipay\Tests\GatewayTestCase;
 
@@ -39,6 +38,8 @@ class GatewayTest extends GatewayTestCase
         /** @var PurchaseResponse $response */
         $response = $this->gateway->purchase([
             'transactionId' => 'DMC123456789',
+            'description' => 'Test',
+            'items' => [],
             'language' => 'FR',
             'amount' => '10.00',
             'currency' => 'EUR',

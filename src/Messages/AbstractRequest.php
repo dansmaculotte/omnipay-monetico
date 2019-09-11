@@ -4,9 +4,7 @@
 namespace Omnipay\Monetico\Messages;
 
 use DansMaCulotte\Monetico\Monetico;
-use Omnipay\Common\Http\ClientInterface;
 use Omnipay\Common\Message\AbstractRequest as OmnipayAbstractRequest;
-use Symfony\Component\HttpFoundation\Request;
 
 abstract class AbstractRequest extends OmnipayAbstractRequest
 {

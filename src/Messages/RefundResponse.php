@@ -28,6 +28,4 @@ class RefundResponse extends AbstractResponse
     {
         return $this->data->returnCode === 0;
     }
-
-
 }

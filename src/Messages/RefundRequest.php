@@ -3,7 +3,6 @@
 
 namespace Omnipay\Monetico\Messages;
 
-use DansMaCulotte\Monetico\Monetico;
 use DansMaCulotte\Monetico\Requests\RefundRequest as MoneticoRefund;
 
 class RefundRequest extends AbstractRequest
