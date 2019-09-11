@@ -40,13 +40,19 @@ class PurchaseRequest extends AbstractRequest
         ]);
 
         $client = $this->getClient();
-        $capture->setClient($client);
+        if ($client) {
+            $capture->setClient($client);
+        }
 
         $billingAddress = $this->getBillingAddress();
-        $capture->setBillingAddress($billingAddress);
+        if ($billingAddress) {
+            $capture->setBillingAddress($billingAddress);
+        }
 
         $shippingAddress = $this->getShippingAddress();
-        $capture->setShippingAddress($shippingAddress);
+        if ($shippingAddress) {
+            $capture->setShippingAddress($shippingAddress);
+        }
 
         return [
             'fields' => $monetico->getFields($capture),
@@ -62,20 +68,39 @@ class PurchaseRequest extends AbstractRequest
     {
         $card = $this->getCard();
 
-        $client = new ClientResource([
-            'civility' => $card->getGender(),
-            'firstName' => $card->getFirstName(),
-            'lastName' => $card->getLastName(),
-            'name' => $card->getName(),
-            'birthdate' => $card->getBirthday(),
-            'addressLine1' => $card->getAddress1(),
-            'addressLine2' => $card->getAddress2(),
-            'city' => $card->getCity(),
-            'postalCode' => $card->getPostcode(),
-            'country' => $card->getCountry(),
-            'stateOrProvince' => $card->getState(),
-            'phone' => $card->getPhoneExtension() . $card->getPhone(),
-        ]);
+        $mapOmnipayToMonetico = [
+            'gender' => 'civility',
+            'firstName' => 'firstName',
+            'lastName' => 'lastName',
+            'name' => 'name',
+            'birthday' => 'birthdate',
+            'address1' => 'addressLine1',
+            'address2' => 'addressLine2',
+            'city' => 'city',
+            'postcode' => 'postalCode',
+            'country' => 'country',
+            'state' => 'stateOrProvince',
+            'phone' => 'phone'
+        ];
+
+        $parameters = [];
+        foreach ($mapOmnipayToMonetico as $method => $key) {
+            $method = 'get'.ucfirst($method);
+            $parameter = $card->$method();
+            if ($parameter) {
+                $parameters[$key] = $parameter;
+            }
+        }
+
+        if (count($parameters) === 0) {
+            return null;
+        }
+
+        $client = new ClientResource($parameters);
+
+        if ($client->getParameter('phone')) {
+            $client->setParameter('phone', $card->getPhoneExtension() . $card->getPhone());
+        }
 
         return $client;
     }
@@ -134,6 +159,11 @@ class PurchaseRequest extends AbstractRequest
         ]);
 
         return $address;
+    }
+
+    private function getAddress()
+    {
+
     }
 
     /**
