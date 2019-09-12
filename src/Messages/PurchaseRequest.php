@@ -35,7 +35,6 @@ class PurchaseRequest extends AbstractRequest
             'email' => $this->card->getEmail(),
             'amount' => $this->getAmount(),
             'currency' => $this->getCurrency(),
-            'cart' => $this->getCart(),
             'successUrl' => $this->getReturnUrl(),
             'errorUrl' => $this->getCancelUrl(),
         ]);
@@ -43,6 +42,11 @@ class PurchaseRequest extends AbstractRequest
         $client = $this->getClient();
         if ($client) {
             $capture->setClient($client);
+        }
+
+        $cart = $this->getCart();
+        if ($cart) {
+            $capture->setCart($cart);
         }
 
         $billingAddress = $this->getBillingAddress();
@@ -175,14 +179,18 @@ class PurchaseRequest extends AbstractRequest
     {
         $items = $this->getItems();
 
+        if (count($items) === 0) {
+            return null;
+        }
+
         $cart = new CartResource();
         foreach ($items as $item) {
             $cartItem = new CartItemResource([
+                'name' => $item->getName(),
+                'description' => $item->getDescription(),
                 'unitPrice' => $item->getPrice(),
                 'quantity' => $item->getQuantity()
             ]);
-            $cartItem->setParameter('name', $item->getName());
-            $cartItem->setParameter('description', $item->getDescription());
             $cart->addItem($cartItem);
         }
 
