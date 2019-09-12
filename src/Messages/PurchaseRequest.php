@@ -3,15 +3,19 @@
 
 namespace Omnipay\Monetico\Messages;
 
-use DansMaCulotte\Monetico\Requests\CaptureRequest as MoneticoCapture;
+use DansMaCulotte\Monetico\Requests\PurchaseRequest as MoneticoPurchase;
 use DansMaCulotte\Monetico\Resources\BillingAddressResource;
 use DansMaCulotte\Monetico\Resources\CartItemResource;
 use DansMaCulotte\Monetico\Resources\CartResource;
 use DansMaCulotte\Monetico\Resources\ClientResource;
 use DansMaCulotte\Monetico\Resources\ShippingAddressResource;
+use Omnipay\Common\CreditCard;
 
 class PurchaseRequest extends AbstractRequest
 {
+    /** @var CreditCard */
+    protected $card;
+
     /**
      * @return array
      * @throws \DansMaCulotte\Monetico\Exceptions\Exception
@@ -19,19 +23,16 @@ class PurchaseRequest extends AbstractRequest
      */
     public function getData()
     {
-//        var_dump($this->getParameters());
-//        die();
-
         $monetico = $this->getMonetico();
 
-        $card = $this->getCard();
+        $this->card = $this->getCard();
 
-        $capture = new MoneticoCapture([
+        $capture = new MoneticoPurchase([
             'reference' => $this->getTransactionId(),
             'language' => strtoupper($this->getLanguage()),
             'dateTime' => new \DateTime(),
             'description' => $this->getDescription(),
-            'email' => $card->getEmail(),
+            'email' => $this->card->getEmail(),
             'amount' => $this->getAmount(),
             'currency' => $this->getCurrency(),
             'cart' => $this->getCart(),
@@ -56,7 +57,7 @@ class PurchaseRequest extends AbstractRequest
 
         return [
             'fields' => $monetico->getFields($capture),
-            'url' => MoneticoCapture::getUrl($this->getTestMode()),
+            'url' => MoneticoPurchase::getUrl($this->getTestMode()),
         ];
     }
 
@@ -66,40 +67,31 @@ class PurchaseRequest extends AbstractRequest
      */
     private function getClient()
     {
-        $card = $this->getCard();
-
-        $mapOmnipayToMonetico = [
-            'gender' => 'civility',
-            'firstName' => 'firstName',
-            'lastName' => 'lastName',
-            'name' => 'name',
-            'birthday' => 'birthdate',
-            'address1' => 'addressLine1',
-            'address2' => 'addressLine2',
-            'city' => 'city',
-            'postcode' => 'postalCode',
-            'country' => 'country',
-            'state' => 'stateOrProvince',
-            'phone' => 'phone'
+        $parameters = [
+            'civility' => $this->card->getGender(),
+            'firstName' => $this->card->getFirstName(),
+            'lastName' => $this->card->getLastName(),
+            'name' => $this->card->getName(),
+            'birthdate' => $this->card->getBirthday(),
+            'addressLine1' => $this->card->getAddress1(),
+            'addressLine2' => $this->card->getAddress2(),
+            'city' => $this->card->getCity(),
+            'postalCode' => $this->card->getPostcode(),
+            'country' => $this->card->getCountry(),
+            'stateOrProvince' => $this->card->getState(),
+            'phone' => $this->card->getPhone(),
         ];
 
-        $parameters = [];
-        foreach ($mapOmnipayToMonetico as $method => $key) {
-            $method = 'get'.ucfirst($method);
-            $parameter = $card->$method();
-            if ($parameter) {
-                $parameters[$key] = $parameter;
+        $client = new ClientResource();
+
+        foreach ($parameters as $key => $value) {
+            if ($value) {
+                $client->setParameter($key, $value);
             }
         }
 
-        if (count($parameters) === 0) {
-            return null;
-        }
-
-        $client = new ClientResource($parameters);
-
         if ($client->getParameter('phone')) {
-            $client->setParameter('phone', $card->getPhoneExtension() . $card->getPhone());
+            $client->setParameter('phone', $this->card->getPhoneExtension() . $this->card->getPhone());
         }
 
         return $client;
@@ -111,24 +103,31 @@ class PurchaseRequest extends AbstractRequest
      */
     private function getBillingAddress()
     {
-        $card = $this->getCard();
+        $parameters = [
+            'name' => $this->card->getBillingName(),
+            'firstName' => $this->card->getBillingFirstName(),
+            'lastName' => $this->card->getBillingLastName(),
+            'addressLine1' => $this->card->getBillingAddress1(),
+            'addressLine2' => $this->card->getBillingAddress2(),
+            'city' => $this->card->getBillingCity(),
+            'postalCode' => $this->card->getBillingPostcode(),
+            'stateOrProvince' => $this->card->getBillingState(),
+            'country' => $this->card->getBillingCountry(),
+            'email' => $this->card->getEmail(),
+            'phone' => $this->card->getBillingPhone(),
+        ];
 
-        $address = new BillingAddressResource(
-            $card->getBillingAddress1(),
-            $card->getBillingCity(),
-            $card->getBillingPostcode(),
-            $card->getBillingCountry()
-        );
+        $address = new BillingAddressResource();
 
-        $address->setParameters([
-            'name' => $card->getBillingName(),
-            'firstName' => $card->getBillingFirstName(),
-            'lastName' => $card->getBillingLastName(),
-            'addressLine2' => $card->getBillingAddress2(),
-            'stateOrProvince' => $card->getBillingState(),
-            'email' => $card->getEmail(),
-            'phone' => $card->getBillingPhoneExtension() . $card->getBillingPhone(),
-        ]);
+        foreach ($parameters as $key => $value) {
+            if ($value) {
+                $address->setParameter($key, $value);
+            }
+        }
+
+        if ($address->getParameter('phone')) {
+            $address->setParameter('phone', $this->card->getBillingPhoneExtension() . $this->card->getBillingPhone());
+        }
 
         return $address;
     }
@@ -139,31 +138,33 @@ class PurchaseRequest extends AbstractRequest
      */
     private function getShippingAddress()
     {
-        $card = $this->getCard();
+        $parameters = [
+            'name' => $this->card->getShippingName(),
+            'firstName' => $this->card->getShippingFirstName(),
+            'lastName' => $this->card->getShippingLastName(),
+            'addressLine1' => $this->card->getShippingAddress1(),
+            'addressLine2' => $this->card->getShippingAddress2(),
+            'city' => $this->card->getShippingCity(),
+            'postalCode' => $this->card->getShippingPostcode(),
+            'stateOrProvince' => $this->card->getShippingState(),
+            'country' => $this->card->getShippingCountry(),
+            'email' => $this->card->getEmail(),
+            'phone' => $this->card->getShippingPhone(),
+        ];
 
-        $address = new ShippingAddressResource(
-            $card->getShippingAddress1(),
-            $card->getShippingCity(),
-            $card->getShippingPostcode(),
-            $card->getShippingCountry()
-        );
+        $address = new ShippingAddressResource();
 
-        $address->setParameters([
-            'name' => $card->getShippingName(),
-            'firstName' => $card->getShippingFirstName(),
-            'lastName' => $card->getShippingLastName(),
-            'addressLine2' => $card->getShippingAddress2(),
-            'stateOrProvince' => $card->getShippingState(),
-            'email' => $card->getEmail(),
-            'phone' => $card->getShippingPhoneExtension() . $card->getShippingPhone(),
-        ]);
+        foreach ($parameters as $key => $value) {
+            if ($value) {
+                $address->setParameter($key, $value);
+            }
+        }
+
+        if ($address->getParameter('phone')) {
+            $address->setParameter('phone', $this->card->getShippingPhoneExtension() . $this->card->getShippingPhone());
+        }
 
         return $address;
-    }
-
-    private function getAddress()
-    {
-
     }
 
     /**
@@ -176,7 +177,10 @@ class PurchaseRequest extends AbstractRequest
 
         $cart = new CartResource();
         foreach ($items as $item) {
-            $cartItem = new CartItemResource($item->getPrice(), $item->getQuantity());
+            $cartItem = new CartItemResource([
+                'unitPrice' => $item->getPrice(),
+                'quantity' => $item->getQuantity()
+            ]);
             $cartItem->setParameter('name', $item->getName());
             $cartItem->setParameter('description', $item->getDescription());
             $cart->addItem($cartItem);

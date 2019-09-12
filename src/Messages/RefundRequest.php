@@ -14,9 +14,6 @@ class RefundRequest extends AbstractRequest
      */
     public function getData()
     {
-//        var_dump($this->getParameters());
-//        die();
-
         $monetico = $this->getMonetico();
 
         $refund = new MoneticoRefund([
@@ -44,9 +41,6 @@ class RefundRequest extends AbstractRequest
         $body = http_build_query($data['fields'], '', '&');
 
         $response = $this->httpClient->request('POST', $data['url'], $headers, $body);
-
-        var_dump($response->getBody()->getContents());
-        die();
 
         $this->response = new RefundResponse($this, $response->getBody()->getContents());
 
