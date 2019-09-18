@@ -5,6 +5,7 @@ namespace Omnipay\Monetico\Tests;
 use DansMaCulotte\Monetico\Requests\PurchaseRequest as MoneticoPurchase;
 use Omnipay\Common\CreditCard;
 use Omnipay\Monetico\Gateway;
+use Omnipay\Monetico\Messages\CompletePurchaseResponse;
 use Omnipay\Monetico\Messages\PurchaseResponse;
 use Omnipay\Tests\GatewayTestCase;
 
@@ -54,5 +55,24 @@ class GatewayTest extends GatewayTestCase
         $this->assertNotNull($response->getRedirectUrl());
         $this->assertSame(MoneticoPurchase::getUrl(true), $response->getRedirectUrl());
         $this->assertTrue($response->isTransparentRedirect());
+    }
+
+    public function testCompletePurchase()
+    {
+        /** @var CompletePurchaseResponse $response */
+        $response = $this->gateway->completePurchase([
+            'transactionId' => 'DMC123456789',
+            'description' => 'Test',
+            'items' => [],
+            'language' => 'FR',
+            'amount' => '10.00',
+            'currency' => 'EUR',
+            'card' => $this->card,
+            'returnUrl' => 'http://localhost/success',
+            'cancelUrl' => 'http://localhost/error',
+        ])->send();
+
+        $this->assertInstanceOf(CompletePurchaseResponse::class, $response);
+        $this->assertTrue($response->isSuccessful());
     }
 }

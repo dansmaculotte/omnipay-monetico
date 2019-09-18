@@ -11,9 +11,6 @@ class PurchaseResponse extends AbstractResponse implements RedirectResponseInter
     public function __construct(PurchaseRequest $request, array $data)
     {
         parent::__construct($request, $data);
-
-//        var_dump($data);
-//        die();
     }
 
     /**
