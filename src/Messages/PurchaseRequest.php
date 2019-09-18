@@ -179,7 +179,7 @@ class PurchaseRequest extends AbstractRequest
     {
         $items = $this->getItems();
 
-        if (count($items) === 0) {
+        if (!$items || count($items) === 0) {
             return null;
         }
 
