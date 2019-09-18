@@ -95,7 +95,11 @@ class PurchaseRequest extends AbstractRequest
         }
 
         if ($client->getParameter('phone')) {
-            $client->setParameter('phone', $this->card->getPhoneExtension() . $this->card->getPhone());
+            $extension = $this->card->getPhoneExtension();
+            $number = $this->card->getPhone();
+
+            $phone = "+{$extension}-{$number}";
+            $client->setParameter('phone', $phone);
         }
 
         return $client;
@@ -130,7 +134,11 @@ class PurchaseRequest extends AbstractRequest
         }
 
         if ($address->getParameter('phone')) {
-            $address->setParameter('phone', $this->card->getBillingPhoneExtension() . $this->card->getBillingPhone());
+            $extension = $this->card->getBillingPhoneExtension();
+            $number = $this->card->getBillingPhone();
+
+            $phone = "+{$extension}-{$number}";
+            $address->setParameter('phone', $phone);
         }
 
         return $address;
@@ -165,7 +173,11 @@ class PurchaseRequest extends AbstractRequest
         }
 
         if ($address->getParameter('phone')) {
-            $address->setParameter('phone', $this->card->getShippingPhoneExtension() . $this->card->getShippingPhone());
+            $extension = $this->card->getShippingPhoneExtension();
+            $number = $this->card->getShippingPhone();
+
+            $phone = "+{$extension}-{$number}";
+            $address->setParameter('phone', $phone);
         }
 
         return $address;
