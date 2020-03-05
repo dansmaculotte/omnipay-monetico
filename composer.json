@@ -1,5 +1,6 @@
 {
     "name": "dansmaculotte/omnipay-monetico",
+    "version": "1.0.0",
     "description": "Monetico driver for the Omnipay PHP payment processing library",
     "type": "library",
     "keywords": [
