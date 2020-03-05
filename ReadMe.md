@@ -19,7 +19,7 @@ to your `composer.json` file:
 ```json
 {
     "require": {
-        "dansmaculotte/omnipay-monetico": "dev-master"
+        "dansmaculotte/omnipay-monetico": "^1.0"
     }
 }
 ```
