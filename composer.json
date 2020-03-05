@@ -27,7 +27,7 @@
     },
     "require": {
         "php": "^7.2",
-        "dansmaculotte/monetico-php": "2.0.x-dev",
+        "dansmaculotte/monetico-php": "^2.0",
         "omnipay/common": "^3.0"
     },
     "require-dev": {
