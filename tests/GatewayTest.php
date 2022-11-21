@@ -17,7 +17,7 @@ class GatewayTest extends GatewayTestCase
     /** @var CreditCard */
     protected $card;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
