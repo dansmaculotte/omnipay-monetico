@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "38d472652664154a22bc5ca99cad01f8",
+    "content-hash": "776d9dce4a032ea9deb5edc315aa552b",
     "packages": [
         {
             "name": "clue/stream-filter",
@@ -74,16 +74,16 @@
         },
         {
             "name": "dansmaculotte/monetico-php",
-            "version": "2.x-dev",
+            "version": "2.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dansmaculotte/monetico-php.git",
-                "reference": "1c8de328cc99387f20c5849b74f5b1531a06b44a"
+                "reference": "da749dbedfb20abdfac8e557fe5259419c8523e5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dansmaculotte/monetico-php/zipball/1c8de328cc99387f20c5849b74f5b1531a06b44a",
-                "reference": "1c8de328cc99387f20c5849b74f5b1531a06b44a",
+                "url": "https://api.github.com/repos/dansmaculotte/monetico-php/zipball/da749dbedfb20abdfac8e557fe5259419c8523e5",
+                "reference": "da749dbedfb20abdfac8e557fe5259419c8523e5",
                 "shasum": ""
             },
             "require": {
@@ -95,7 +95,6 @@
                 "nesbot/carbon": "^2.27",
                 "phpunit/phpunit": "^9.5"
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "hooks": {
@@ -131,7 +130,7 @@
                 "issues": "https://github.com/dansmaculotte/monetico-php/issues",
                 "source": "https://github.com/dansmaculotte/monetico-php/tree/v2.0.7"
             },
-            "time": "2022-11-21T15:05:17+00:00"
+            "time": "2022-11-21T15:23:36+00:00"
         },
         {
             "name": "moneyphp/money",
